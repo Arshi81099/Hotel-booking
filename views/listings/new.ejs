@@ -1,44 +1,66 @@
 <% layout("layouts/boilerplate") %>
 <body>
     <div class="row">
-    <div class="col-8 offset-2">
-        <br> <br>
-        <h2>Create a New Listing</h2>
-        <form method="post" action="/listing">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input name="listing[title]" type="text" class="form-control" placeholder="enter a title">
-            </div>
+        <div class="col-8 offset-2">
+            <br> <br>
+            <h2>Create a New Listing</h2>
+            <form id="listingForm" class="needs-validation" novalidate method="post" action="/listing">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input name="listing[title]" type="text" class="form-control" placeholder="enter a title" required>
+                    <div class="invalid-feedback">Please enter a title.</div>
+                </div>
 
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="listing[description]" class="form-control" > </textarea>
-            </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="listing[description]" class="form-control" required></textarea>
+                    <div class="invalid-feedback">Please enter a description.</div>
+                </div>
 
-        <div class="row">
-            <div class="mb-3 col-md-4">
-                <label for="price" class="form-label">Price</label>
-                <input name="listing[price]" type="number" class="form-control" placeholder="1200">
-            </div>
-            <div class="mb-3 col-md-8">
-                <label for="country" class="form-label">Country</label>
-                <input name="listing[country]" type="text" class="form-control" placeholder="India">
-            </div>
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form-label">Price</label>
+                        <input name="listing[price]" type="number" class="form-control" placeholder="1200" required>
+                        <div class="invalid-feedback">Please enter a price.</div>
+                    </div>
+                    <div class="mb-3 col-md-8">
+                        <label for="country" class="form-label">Country</label>
+                        <input name="listing[country]" type="text" class="form-control" placeholder="India" required>
+                        <div class="invalid-feedback">Please enter a country.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input name="listing[location]" type="text" class="form-control" placeholder="Delhi" required>
+                    <div class="invalid-feedback">Please enter a location.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input name="listing[image]" type="text" class="form-control" placeholder="enter image/URL link">
+                </div>
+                <br> <br>
+                <button class="btn btn-dark add-btn">Add</button>
+                <br> <br>
+            </form>
         </div>
-
-            <div class="mb-3">
-                <label for="location" class="form-label">Location</label>
-                <input name="listing[location]" type="text" class="form-control" placeholder="Delhi">
-            </div>
-
-            <div class="mb-3">
-                <label for="image" class="form-label">Image</label>
-                <input name="listing[image]" type="text" class="form-control" placeholder="enter image/URL link">
-            </div>
-            <br> <br>
-            <button class="btn btn-dark add-btn"> Add </button>
-            <br> <br>
-        </form>
     </div>
-    </div>
+
+    <script>
+        // JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var form = document.getElementById('listingForm');
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }, false);
+        })();
+    </script>
 </body>
