@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 const validateListing = (req, res, next) => {
     let {error} = listingSchema.validate(req.body);
     if(error){
-        throw new expessError(400, result.error);
+        throw new expessError(400, error);
     }else{
         next();
     }
@@ -73,10 +73,7 @@ app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
 }));
 
 // Update Route
-app.put("/listings/:id", wrapAsync(async (req, res) => {
-    if(!req.body.listing){
-        throw new expessError(400, "Invalid Listing Data");
-    }
+app.put("/listings/:id", validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, {...req.body.listing});
     res.redirect(`/listings/${id}`);
