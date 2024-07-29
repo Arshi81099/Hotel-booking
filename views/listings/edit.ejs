@@ -4,40 +4,63 @@
         <div class="col-8 offset-2">
             <br> <br>
             <h2>Edit Listing</h2>
-            <form method="post" action="/listings/<%= listing._id %>?_method=put">
+            <form method="post" class="needs-validation" novalidate action="/listings/<%= listing._id %>?_method=put">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input name="listing[title]" type="text" class="form-control" value="<%= listing.title %>">
+                    <input name="listing[title]" type="text" class="form-control" value="<%= listing.title %>" required>
+                    <div class="invalid-feedback">Please enter a title.</div>
                 </div>
                 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea name="listing[description]" class="form-control"><%= listing.description %></textarea>
+                    <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
+                    <div class="invalid-feedback">Please enter a description.</div>
                 </div>
                 
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label for="price" class="form-label">Price</label>
-                        <input name="listing[price]" type="number" class="form-control" value="<%= listing.price %>">
+                        <input name="listing[price]" type="number" class="form-control" value="<%= listing.price %>" required>
+                        <div class="invalid-feedback">Please enter a price.</div>
+
                     </div>
                     <div class="mb-3 col-md-8">
                         <label for="country" class="form-label">Country</label>
-                        <input name="listing[country]" type="text" class="form-control" value="<%= listing.country %>">
+                        <input name="listing[country]" type="text" class="form-control" value="<%= listing.country %>" required>
+                        <div class="invalid-feedback">Please enter a country.</div>
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
-                    <input name="listing[location]" type="text" class="form-control" value="<%= listing.location %>">
+                    <input name="listing[location]" type="text" class="form-control" value="<%= listing.location %>" required>
+                    <div class="invalid-feedback">Please enter a location.</div>
                 </div>
                 
                 <div class="mb-3">
                     <label for="image" class="form-label">Image URL</label>
-                    <input name="listing[image]" type="text" class="form-control" value="<%= listing.image %>">
+                    <input name="listing[image]" type="text" class="form-control" value="<%= listing.image %>" required>
+                    <div class="invalid-feedback">Please enter image.</div>
                 </div>
                 
                 <button class="btn btn-dark add-btn">Edit</button>
             </form>
         </div>
     </div>
+    <script>
+        // JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var form = document.getElementById('listingForm');
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }, false);
+        })();
+    </script>
 </body>
