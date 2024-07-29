@@ -7,6 +7,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync");
 const expessError = require("./utils/expressError");
+const { listingSchema } = require("./schema.js");
 
 const MONGO_URL = "mongodb://localhost:27017/wanderlust";
 
@@ -29,6 +30,15 @@ app.get("/", (req, res) => {
     res.send("Hii! I am root");
     });
 
+const validateListing = (req, res, next) => {
+    let {error} = listingSchema.validate(req.body);
+    if(error){
+        throw new expessError(400, result.error);
+    }else{
+        next();
+    }
+}
+
 // Index Route
 app.get("/listings", wrapAsync(async (req, res) => {
     const allListings = await Listing.find({});
@@ -48,14 +58,12 @@ app.get("/listings/:id", wrapAsync(async (req, res) => {
 }));
 
 // Create Route
-app.post("/listing", wrapAsync(async(req, res, next) => {
-        if(!req.body.listing){
-            throw new expessError(400, "Invalid Listing Data");
-        }
+app.post("/listing",validateListing, wrapAsync(async(req, res, next) => {
         const newListing = new Listing(req.body.listing);
         await newListing.save();
         res.redirect("/listings");
-}));
+    })
+);
 
 // Edit Route
 app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
