@@ -6,7 +6,7 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync");
-const expessError = require("./utils/expressError");
+const expressError = require("./utils/expressError");
 const { listingSchema } = require("./schema.js");
 const Review = require("./models/review");
 
@@ -36,7 +36,7 @@ const validateListing = (req, res, next) => {
     let {error} = listingSchema.validate(req.body);
     if(error){
         let errMsg = error.details.map(el => el.message).join(",");
-        throw new expessError(400, errMsg);
+        throw new expressError(400, errMsg);
     }else{
         next();
     }
@@ -101,16 +101,18 @@ app.post("/listing/:id/reviews", async (req, res) => {
     await newReview.save();
     await listing.save();
 
-    res.redirect(`/listings/${listing._id}`);
+    // res.redirect(`/listings/${listing._id}`);
+    console.log("new reveiw added");
+    res.send("Review added");
 });
 
 app.all("*", (req, res, next) => {
-    next(new expessError(404, "Page Not Found"));
+    next(new expressError(404, "Page Not Found"));
 });
 
 app.use((err, req, res, next) => {
-    let { statusCode = 500, message = "Something went wrong!!"} = err;
-    res.status(statusCode).render("error.ejs", { err });
+    let { status = 500, message = "Something went wrong!!"} = err;
+    res.status(status).render("error.ejs", { err });
     // res.render("error.ejs"), { err };
 });
 
