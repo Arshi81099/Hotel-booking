@@ -56,3 +56,24 @@
       </form>
     </div>
 </div>
+<script>
+  // Wait for the DOM to be fully loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the form element
+    var form = document.querySelector('.needs-validation');
+
+    // Add a submit event listener
+    form.addEventListener('submit', function(event) {
+      // Check if the form is valid
+      if (form.checkValidity() === false) {
+        // Prevent the form from submitting
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      // Add the 'was-validated' class to display validation feedback
+      form.classList.add('was-validated');
+    }, false);
+  });
+</script>
+
