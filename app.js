@@ -8,6 +8,8 @@ const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync");
 const expessError = require("./utils/expressError");
 const { listingSchema } = require("./schema.js");
+const Review = require("./models/review");
+
 
 const MONGO_URL = "mongodb://localhost:27017/wanderlust";
 
@@ -33,7 +35,8 @@ app.get("/", (req, res) => {
 const validateListing = (req, res, next) => {
     let {error} = listingSchema.validate(req.body);
     if(error){
-        throw new expessError(400, error);
+        let errMsg = error.details.map(el => el.message).join(",");
+        throw new expessError(400, errMsg);
     }else{
         next();
     }
@@ -86,6 +89,20 @@ app.delete("/listings/:id", wrapAsync(async(req, res) => {
     console.log(deletedListing);
     res.redirect("/listings");
 }));
+
+//Reviews
+//Post Route
+app.post("/listing/:id/reviews", async (req, res) => {
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+
+    listing.reviews.push(newReview);
+
+    await newReview.save();
+    await listing.save();
+
+    res.redirect(`/listings/${listing._id}`);
+});
 
 app.all("*", (req, res, next) => {
     next(new expessError(404, "Page Not Found"));
