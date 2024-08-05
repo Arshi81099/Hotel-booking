@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const review = require('./review');
+const Review = require('./review');
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
@@ -22,6 +22,13 @@ const listingSchema = new Schema({
         },
     ],
 });
+
+listingSchema.post('findOneAndDelete', async function(doc) {
+    if (doc) {
+        await Review.deleteMany({ _id: { $in: doc.reviews } });
+    }
+});
+
 
 // Pre-save hook to handle default value for image field
 listingSchema.pre('save', function(next) {
