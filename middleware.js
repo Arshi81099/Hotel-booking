@@ -9,7 +9,7 @@ module.exports.isLoggedIn = (req, res, next) => {
 
 module.exports.saveRedirectUrl = (req, res, next) => {
     if(req.session.redirectUrl) {
-        req.session.redirectUrl = req.originalUrl;
+        res.locals.redirectUrl = req.session.originalUrl;
     }
     next();
 };
