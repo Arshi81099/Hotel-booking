@@ -9,13 +9,24 @@ router.get('/signup', (req, res) => {
 });
 
 
-router.post('/signup', wrapAsync(async (req, res) => {
+router.post('/signup', wrapAsync(async (req, res, next) => { // Added 'next' parameter
     let { email, username, password } = req.body;
     const newUser = new User({ email, username });
     const registeredUser = await User.register(newUser, password);
-    req.flash("success", "Welcome to Wanderlust!");
-    res.redirect('/listings');
+    req.login(registeredUser, (err) => { // Changed 'res.login' to 'req.login'
+        if (err) {
+            return next(err);
+        }
+        req.flash("success", "Welcome to Wanderlust!");
+        return res.redirect('/listings'); // Added return to ensure proper flow
+    });
 }));
+
+router.use((err, req, res, next) => { // Error handling middleware
+    req.flash("error", err.message);
+    res.redirect('/signup');
+});
+
 
 
 router.get('/login', (req, res) => {
