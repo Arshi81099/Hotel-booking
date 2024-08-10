@@ -23,7 +23,7 @@ const initDB = async () => {
   initData.data = initData.data.map((obj) => ({
     ...obj,
     owner: "66b2507b05a002ad0a634290", // Set a specific owner ID
-    image: obj.image.url, 
+    image: obj.image, 
   }));
   await Listing.insertMany(initData.data); // Insert modified data into the Listing collection
   console.log("data was initialized");
