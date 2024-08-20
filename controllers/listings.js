@@ -22,8 +22,6 @@ module.exports.showListing = async (req, res) => {
 };
 
 module.exports.createListing = async(req, res, next) => {
-    console.log(process.env.CLOUD_NAME, process.env.CLOUD_API_KEY, process.env.CLOUD_API_SECRET);
-
     let url = req.file.path;
     let filename = req.file.filename;
     console.log(url, filename);
@@ -43,7 +41,10 @@ module.exports.renderEditForm = async (req, res) => {
         req.flash("error", "Cannot find that listing");
         res.redirect("/listings");
     }
-    res.render("listings/edit.ejs", { listing });
+
+    let originalImage = listing.image.url;
+    originalImage = originalImage.replace("upload/", "upload/h_300,w_250");
+    res.render("listings/edit.ejs", { listing, originalImage });
 };
 
 module.exports.updateListing = async (req, res) => {
