@@ -110,3 +110,8 @@ body {
     padding-left: 0;
     padding-right: 0;
 }
+
+#map{
+    width: 60vh;
+    height: 400px;
+ }

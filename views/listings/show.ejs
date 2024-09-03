@@ -1,4 +1,21 @@
 <% layout("/layouts/boilerplate") %>
+<script>
+  const mapToken = "<%= process.env.MAP_TOKEN %>";
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var form = document.querySelector('.needs-validation');
+
+    form.addEventListener('submit', function(event) {
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      form.classList.add('was-validated');
+    }, false);
+  });
+</script>
+
 <div class="row mt-3">
   <div class="col-8 offset-3">
     <h3><%= listing.title %></h3>
@@ -36,8 +53,8 @@
   <% } %>
 
     <div class="col-8 offset-3 mb-3">
-      <hr />
       <% if(currUser) { %>
+        <hr />
       <h4>Leave a Review</h4>
       <form action="/listings/<%= listing.id %>/reviews" method="post" novalidate class="needs-validation">
 
@@ -75,9 +92,10 @@
       <hr />
       <% } %>
 
-      <p><b>All Reviews</b></p>
+
       <div class="row">
         <% if (listing.reviews && listing.reviews.length > 0) { %>
+          <p><b>All Reviews</b></p>
           <% for (let review of listing.reviews) { %>
             <div class="card col-5 ms-3 mb-3">
               <div class="card-body">
@@ -95,26 +113,10 @@
           <p>No reviews available.</p>
         <% } %>
       </div>
-      
-</div>
-<script>
-  // Wait for the DOM to be fully loaded
-  document.addEventListener('DOMContentLoaded', function() {
-    // Get the form element
-    var form = document.querySelector('.needs-validation');
+  </div>
+  <div class="col-8 offset-3 mb-3">
+    <h3>Where you'll be</h3>
+    <div id="map"></div>
+  </div>
 
-    // Add a submit event listener
-    form.addEventListener('submit', function(event) {
-      // Check if the form is valid
-      if (form.checkValidity() === false) {
-        // Prevent the form from submitting
-        event.preventDefault();
-        event.stopPropagation();
-      }
-
-      // Add the 'was-validated' class to display validation feedback
-      form.classList.add('was-validated');
-    }, false);
-  });
-</script>
-
+<script src="/js/map.js"></script>
