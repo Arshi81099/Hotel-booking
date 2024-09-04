@@ -1,6 +1,8 @@
 <% layout("/layouts/boilerplate") %>
 <script>
   const mapToken = "<%= process.env.MAP_TOKEN %>";
+  const listing = <%- JSON.stringify(listing) %>;
+
 
   document.addEventListener('DOMContentLoaded', function() {
     var form = document.querySelector('.needs-validation');
